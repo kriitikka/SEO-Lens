@@ -2,6 +2,7 @@ import requests
 import os
 import json
 from pathlib import Path
+import streamlit as st
 
 serp_key = st.secrets["SERPAPI_KEY"]
 gemini_key = st.secrets["GEMINI_API_KEY"]
