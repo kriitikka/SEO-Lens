@@ -8,11 +8,11 @@ st.set_page_config(page_title=" SEO Gemini", layout="wide")
 # Sidebar for inputs
 with st.sidebar:
     st.header("Settings")
-    keyword = st.text_input("Keyword", "best running shoes")
+    keyword = st.text_input("Keyword", placeholder="Ask Anything", key="keyword_input")
     num_results = st.slider("Number of SERP Results", 5, 20, 10)
 
 #UI
-st.title(f"SEO Analysis for: '{keyword}'")
+st.title(f"SEO Analysis \n{keyword}")
 if st.button("Analyze", type="primary"):
     with st.spinner("Scraping Google and analyzing with Gemini..."):
         #Scraping SERP
