@@ -3,7 +3,6 @@ import streamlit as st
 import os
 from typing import List, Dict
 
-load_dotenv()
 genai.configure(api_key=st.secret["GEMINI_API_KEY"])
 model = genai.GenerativeModel('models/gemini-1.5-flash-latest')
 
