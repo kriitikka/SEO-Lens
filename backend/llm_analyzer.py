@@ -3,7 +3,7 @@ import streamlit as st
 import os
 from typing import List, Dict
 
-genai.configure(api_key=st.secret["GEMINI_API_KEY"])
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 model = genai.GenerativeModel('models/gemini-1.5-flash-latest')
 
 def analyze_serp_with_llm(serp_data: List[Dict]) -> str:
