@@ -4,7 +4,7 @@ import os
 from typing import List, Dict
 
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-model = genai.GenerativeModel('models/gemini-1.5-flash-latest')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 def analyze_serp_with_llm(serp_data: List[Dict]) -> str:
     #preparing prompt for gemini
