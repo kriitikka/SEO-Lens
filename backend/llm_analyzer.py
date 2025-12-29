@@ -9,7 +9,7 @@ model = genai.GenerativeModel('models/gemini-2.5-flash-lite')
 def analyze_serp_with_llm(serp_data: List[Dict]) -> str:
     #preparing prompt for gemini
     snippets = [result.get("snippet", "") for result in serp_data]
-     prompt = f"""
+    prompt = f"""
     You are a Senior SEO Strategist. Analyze the following Google SERP data to reverse-engineer the ranking requirements:
     DATA:{snippets}
 
