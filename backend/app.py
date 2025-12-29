@@ -1,7 +1,6 @@
 import streamlit as st
 from serp_scraper import scrape_serp
-from llm_analyzer import analyze_serp_with_llm
-from seo_recommender import generate_content_recommendations
+from llm_analyzer import analyze_serp_with_llm, generate_content_recommendations
 
 st.set_page_config(page_title=" SEO Gemini", layout="wide")
 
