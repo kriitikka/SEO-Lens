@@ -27,5 +27,12 @@ if st.button("Analyze", type="primary"):
         st.subheader(" Your SEO Blueprint")
         recommendations = generate_content_recommendations(keyword, serp_data)
         st.markdown(recommendations)
+        st.divider()
+        full_report = f"# SEO Report for: {keyword}\n\n## Analysis\n{analysis}\n\n## Recommendations\n{recommendations}"
+        
+        if hasattr(st, "copy_to_clipboard"):
+            if st.button("Copy Full Report"):
+                st.copy_to_clipboard(full_report)
+                st.toast("Report copied!")
 
     st.success("Done! ")
