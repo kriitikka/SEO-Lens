@@ -3,19 +3,20 @@ from typing import Dict, List
 from llm_analyzer import model  # Reuse Gemini model
 
 def generate_content_recommendations(keyword: str, serp_data: List[Dict]) -> str:
-    """
-    Uses Gemini to suggest optimized content based on SERP data.
-    Returns: Markdown-formatted recommendations.
-    """
+    context = [f"Title: {r.get('title')}\nSnippet: {r.get('snippet')}" for r in serp_data]
+    
     prompt = f"""
-    You are an SEO expert. For the keyword '{keyword}', suggest:
-    1. A compelling meta title (60 chars max).
-    2. A meta description (160 chars max).
-    3. 3 header (H2) ideas.
-    4. 3 semantic keywords to include.
+    Act as a Content Optimizer. For the target keyword '{keyword}', generate a content plan that is '10x better' than the current top results.
+    
+    COMPETITOR DATA:
+    {context}
 
-    Base this on top-ranking results:
-    {[r.get('snippet', '')[:200] for r in serp_data]}
+    OUTPUT THE FOLLOWING:
+    1. **High-CTR Meta Title**: Create a title that uses a 'Power Word' and stays under 60 chars.
+    2. **Persuasive Meta Description**: A 155-character description with a clear Call to Action (CTA).
+    3. **Optimized H1 & H2 Outline**: Provide a logical heading structure that covers the user's journey.
+    4. **Semantic Cloud**: 5-7 NLP keywords that must be included to satisfy the search algorithm's topical relevance.
+    5. **EEAT Signal**: One suggestion on how to prove "First-hand Experience" for this specific topic.
     """
     try:
         response = model.generate_content(prompt)
