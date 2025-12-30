@@ -1,38 +1,55 @@
 import streamlit as st
 from serp_scraper import scrape_serp
-from llm_analyzer import analyze_serp_with_llm
-from seo_recommender import generate_content_recommendations
+from llm_analyzer import analyze_serp_with_llm, generate_content_recommendations, analyze_aeo_with_llm
 
-st.set_page_config(page_title=" SEO Gemini", layout="wide")
+st.set_page_config(page_title=" SEO & AEO", layout="wide")
 
 # Sidebar for inputs
 with st.sidebar:
     st.header("Settings")
-    keyword = st.text_input("Keyword", placeholder="Ask Anything", key="keyword_input")
-    num_results = st.slider("Number of SERP Results", 5, 20, 10)
+    keyword = st.text_input("Keyword",  placeholder="Ask Anything", key="keyword_input")
+    num_results = st.slider("Number of SERP Results to Analyze", 5, 20, 10)
 
 #UI
-st.title(f"SEO Analysis \n{keyword}")
+st.title(f"Dual Engine Analysis: SEO + AEO \n{keyword}")
 if st.button("Analyze", type="primary"):
-    with st.spinner("Scraping Google and analyzing with Gemini..."):
-        #Scraping SERP
-        serp_data = scrape_serp(keyword, num_results)
+    with st.spinner("Mining Google SERP data and running AI audits..."):
         
-        #Analyzing with Gemini
-        st.subheader(" Top Ranking Patterns")
-        analysis = analyze_serp_with_llm(serp_data)
-        st.markdown(analysis)
         
         #Generating Recommendations
         st.subheader(" Your SEO Blueprint")
-        recommendations = generate_content_recommendations(keyword, serp_data)
-        st.markdown(recommendations)
-        st.divider()
-        full_report = f"# SEO Report for: {keyword}\n\n## Analysis\n{analysis}\n\n## Recommendations\n{recommendations}"
-        
-        if hasattr(st, "copy_to_clipboard"):
-            if st.button("Copy Full Report"):
-                st.copy_to_clipboard(full_report)
-                st.toast("Report copied!")
+        full_data = scrape_serp(keyword, num_results)
+            
+        seo_analysis = analyze_serp_with_llm(full_data["organic"])
+        seo_blueprint = generate_content_recommendations(keyword, full_data["organic"])
+            
+            # AEO Path
+        aeo_analysis = analyze_aeo_with_llm(keyword, full_data)
 
-    st.success("Done! ")
+            # 3. Display Results in Tabs or Columns
+        tab1, tab2 = st.tabs(["SEO Analysis", "AEO Strategy"])
+            
+        with tab1:
+                st.subheader("SEO Ranking Patterns")
+                st.markdown(seo_analysis)
+                st.subheader("Content Blueprint")
+                st.markdown(seo_blueprint)
+                
+        with tab2:
+                st.subheader("Answer Engine Strategy")
+                st.markdown(aeo_analysis)
+                if full_data["paa"]:
+                    st.info(f"Analyzed {len(full_data['paa'])} 'People Also Ask' questions for this report.")
+
+            # 4. Global Copy/Download Section
+        st.divider()
+        full_master_report = f"""# Master Report: {keyword}
+---
+## SEO AUDIT
+{seo_analysis}
+{seo_blueprint}
+
+---
+## AEO STRATEGY
+{aeo_analysis}
+"""
